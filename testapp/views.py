@@ -5,9 +5,11 @@ from testapp.forms import FeedBackForm
 def feedback_view(request):
     submitted = False
     name = ''
+    form = FeedBackForm()
     if request.method == 'POST':
         form = FeedBackForm(request.POST)
         if form.is_valid():
+            name = form.cleaned_data['name']
             print('Form validation successful. Now printing..')
             print('='*50)
             print('Name:', form.cleaned_data['name'])
@@ -15,5 +17,6 @@ def feedback_view(request):
             print('Email:', form.cleaned_data['email'])
             print('Feedback:', form.cleaned_data['feedback'])
             submitted = True
-    form = FeedBackForm()
+        else:
+            print('Some field validation failed.')
     return render(request, 'testapp/feedback.html', {'form': form, 'submitted': submitted, 'name': name})
